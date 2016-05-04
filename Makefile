@@ -1,5 +1,5 @@
-export DEVKITPRO=/usr/local/devkitPro
 export DEVKITARM=${DEVKITPRO}/devkitARM
+export LIBCTRU=${DEVKITPRO}/libctru
 
 #---------------------------------------------------------------------------------
 .SUFFIXES:
@@ -89,16 +89,21 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 all: $(BUILD)
 
 lib:
-	@[ -d $@ ] || mkdir -p $@
+	@[ -d "$@" ] || mkdir -p "$@"
 	
 $(BUILD): lib
-	@[ -d $@ ] || mkdir -p $@
+	@[ -d "$@" ] || mkdir -p "$@"
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) lib
+
+#---------------------------------------------------------------------------------
+install: build
+	@ @install -Dm644 include/* $(LIBCTRU)/include/
+	@ @install -Dm644 lib/* $(LIBCTRU)/lib/
 
 #---------------------------------------------------------------------------------
 else
